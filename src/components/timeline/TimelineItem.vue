@@ -81,8 +81,21 @@ export default {
     border-radius: 50%;
     border: 3px solid var(--bg-color);
     background: white;
-    transition: all .5s;
     font-weight: bold;
+  }
+
+  .timeline-item--active .timeline-item__size,
+  .timeline-item--active .timeline-item__tooth {
+    animation: pulse 1.5s forwards;
+    transition: all .4s;
+  }
+
+  .timeline-item--active .timeline-item__size:nth-child(2) {
+    animation-delay: 500ms;
+  }
+
+  .timeline-item--active .timeline-item__tooth {
+    animation-delay: 1000ms;
   }
 
   .timeline-item__size img {
@@ -102,5 +115,17 @@ export default {
 
   .timeline-item__tooth-count {
     margin-top: -8px;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    70% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
 </style>

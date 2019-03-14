@@ -1,12 +1,12 @@
 <template lang="pug">
-  ul.nav(v-if="user")
+  ul.nav(v-if="isAuthenticated")
     li.nav-item
       router-link.nav-link(to='/timeline') Фотошкала
     li.nav-item
       router-link.nav-link(to='/profile') Профиль
     li.nav-item
       router-link.nav-link(to='/') Выход
-  ul.nav(v-else="user")
+  ul.nav(v-else="isAuthenticated")
     li.nav-item
       router-link.nav-link(to='/') Главная
     li.nav-item
@@ -19,9 +19,9 @@
 export default {
   name: 'Navigation',
 
-  data () {
-    return {
-      user: true
+  computed: {
+    isAuthenticated () {
+      return this.$store.getters.isAuthenticated
     }
   }
 }
@@ -57,5 +57,10 @@ export default {
   .nav-link:hover {
     text-decoration: underline;
     opacity: 1;
+  }
+
+  .nav-link:focus {
+    outline-color: var(--primary-color);
+    outline-offset: 5px;
   }
 </style>
