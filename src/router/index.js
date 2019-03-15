@@ -5,6 +5,7 @@ import Registration from '@/components/auth/Registration'
 import Login from '@/components/auth/Login'
 import Profile from '@/components/edit/Profile'
 import Timeline from '@/components/timeline/Timeline'
+import store from '@/store'
 
 Vue.use(Router)
 
@@ -30,12 +31,22 @@ export default new Router({
     {
       path: '/profile',
       component: Profile,
-      props: true
+      props: true,
+      beforeEnter: AuthGuard
     },
     {
       path: '/timeline',
       component: Timeline,
-      props: true
+      props: true,
+      beforeEnter: AuthGuard
     }
   ]
 })
+
+function AuthGuard (from, to, next) {
+  if (store.getters.isAuthenticated) {
+    next()
+  } else {
+    next('/registration')
+  }
+}

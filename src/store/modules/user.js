@@ -27,7 +27,7 @@ const actions = {
     firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
       .then(user => {
         // console.log(user)
-        commit('SET_USER', user.uid)
+        // commit('SET_USER', user.uid)
         commit('SET_LOADING', false)
       })
       .catch((error) => {
@@ -44,7 +44,7 @@ const actions = {
     firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
       .then(user => {
         console.log(user)
-        commit('SET_USER', user.uid)
+        // commit('SET_USER', user.uid)
         commit('SET_LOADING', false)
       })
       .catch((error) => {
@@ -52,6 +52,10 @@ const actions = {
         commit('SET_ERROR', error)
         commit('SET_LOADING', false)
       })
+  },
+
+  signOut () {
+    firebase.auth().signOut()
   },
 
   STATE_CHANGED ({commit}, payload) {

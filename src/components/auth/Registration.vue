@@ -1,6 +1,6 @@
 <template lang="pug">
   .registration
-    form.registration-form(name="registration-form" autocomplete="on" @submit.prevent="signUp")
+    form.registration-form(name="registration-form" @submit.prevent="signUp")
       h1.title Регистрация
 
       .form-overlay

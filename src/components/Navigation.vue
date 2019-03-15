@@ -5,7 +5,7 @@
     li.nav-item
       router-link.nav-link(to='/profile') Профиль
     li.nav-item
-      router-link.nav-link(to='/') Выход
+      a.nav-link(href="#" @click.prevent="signOut") Выход
   ul.nav(v-else="isAuthenticated")
     li.nav-item
       router-link.nav-link(to='/') Главная
@@ -22,6 +22,12 @@ export default {
   computed: {
     isAuthenticated () {
       return this.$store.getters.isAuthenticated
+    }
+  },
+
+  methods: {
+    signOut () {
+      this.$store.dispatch('signOut').then(() => this.$router.push('/'))
     }
   }
 }

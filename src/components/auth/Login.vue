@@ -1,9 +1,12 @@
 <template lang="pug">
   .login
-    form.login-form(name="login-form" autocomplete="on" @submit.prevent="login")
+    form.login-form(name="login-form" @submit.prevent="signIn")
       h1.title Вход
 
       .form-overlay
+        .form-field.form-field--error
+          span(v-if="error" :value="error") {{ error.message }}
+
         .form-field
           label.label
             | Элекронная почта
@@ -24,8 +27,7 @@ export default {
   data () {
     return {
       email: null,
-      password: null,
-      confirmPassword: null
+      password: null
     }
   },
 
