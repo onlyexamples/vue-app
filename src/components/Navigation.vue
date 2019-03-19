@@ -1,18 +1,9 @@
 <template lang="pug">
-  ul.nav(v-if="isAuthenticated")
-    li.nav-item
-      router-link.nav-link(to='/timeline') Фотошкала
-    li.nav-item
-      router-link.nav-link(to='/profile') Профиль
-    li.nav-item
+  ul.nav(v-if="menuLinks")
+    li.nav-item(v-for="link in menuLinks")
+      router-link.nav-link(:to="link.url") {{link.title}}
+    li.nav-item(v-if="isAuthenticated")
       a.nav-link(href="#" @click.prevent="signOut") Выход
-  ul.nav(v-else="isAuthenticated")
-    li.nav-item
-      router-link.nav-link(to='/') Главная
-    li.nav-item
-      router-link.nav-link(to='/login') Вход
-      | /
-      router-link.nav-link(to='/registration') Регистрация
 </template>
 
 <script>
@@ -22,12 +13,26 @@ export default {
   computed: {
     isAuthenticated () {
       return this.$store.getters.isAuthenticated
+    },
+
+    menuLinks () {
+      if (this.isAuthenticated) {
+        return [
+          { title: 'Фотошкала', url: '/timeline' },
+          { title: 'Профиль', url: '/profile' }
+        ]
+      }
+      return [
+        { title: 'Главная', url: '/' },
+        { title: 'Вход', url: '/login' },
+        { title: 'Регистрация', url: '/registration' }
+      ]
     }
   },
 
   methods: {
     signOut () {
-      this.$store.dispatch('signOut').then(() => this.$router.push('/'))
+      this.$store.dispatch('signOut').then(() => this.$router.push('/login'))
     }
   }
 }

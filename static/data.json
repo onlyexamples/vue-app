@@ -1,70 +1,71 @@
 {
-  "bornData": {
-    "name": "Тимур",
-    "date": "26.04.2018",
-    "weight": 3410,
-    "height": 52,
-    "editing": false
-  },
-
-  "months": [
-    {
-      "id": 1,
-      "date": "26.05.2018",
-      "photo": "1.jpg",
-      "height": 52,
-      "weight": 3.410
+  "accountData": {},
+  "userBaby": {
+    "bornData": {
+      "date": "26.04.2018",
+      "weight": 3410,
+      "height": 52
     },
-    {
-      "id": 2,
-      "date": "26.06.2018",
-      "photo": "2.jpg",
-      "height": 57,
-      "weight": 4.200
-    },
-    {
-      "id": 3,
-      "date": "26.07.2018",
-      "photo": "3.jpg",
-      "height": 62,
-      "weight": 5.100
-    },
-    {
-      "id": 4,
-      "date": "26.08.2018",
-      "photo": "4.jpg",
-      "height": 64,
-      "weight": 6.200
-    },
-    {
-      "id": 5,
-      "date": "26.09.2018",
-      "photo": "5.jpg",
-      "height": 68,
-      "weight": 7.540
-    },
-    {
-      "id": 6,
-      "date": "26.10.2018",
-      "photo": "6.jpg",
-      "height": 68.5,
-      "weight": 7.8,
-      "tooth": 2
-    },
-    {
-      "id": 7,
-      "date": "26.11.2018",
-      "photo": "7.jpg",
-      "height": 71,
-      "weight": 8.4,
-      "tooth": 2
-    },
-    {
-      "id": 8,
-      "date": "26.12.2018",
-      "photo": "8.jpg",
-      "height": 73,
-      "weight": 8.7
-    }
-  ]
+  
+    "months": [
+      {
+        "id": 1,
+        "date": "26.05.2018",
+        "photo": "1.jpg",
+        "height": 52,
+        "weight": 3.410
+      },
+      {
+        "id": 2,
+        "date": "26.06.2018",
+        "photo": "2.jpg",
+        "height": 57,
+        "weight": 4.200
+      },
+      {
+        "id": 3,
+        "date": "26.07.2018",
+        "photo": "3.jpg",
+        "height": 62,
+        "weight": 5.100
+      },
+      {
+        "id": 4,
+        "date": "26.08.2018",
+        "photo": "4.jpg",
+        "height": 64,
+        "weight": 6.200
+      },
+      {
+        "id": 5,
+        "date": "26.09.2018",
+        "photo": "5.jpg",
+        "height": 68,
+        "weight": 7.540
+      },
+      {
+        "id": 6,
+        "date": "26.10.2018",
+        "photo": "6.jpg",
+        "height": 68.5,
+        "weight": 7.8,
+        "tooth": 2
+      },
+      {
+        "id": 7,
+        "date": "26.11.2018",
+        "photo": "7.jpg",
+        "height": 71,
+        "weight": 8.4,
+        "tooth": 2
+      },
+      {
+        "id": 8,
+        "date": "26.12.2018",
+        "photo": "8.jpg",
+        "height": 73,
+        "weight": 8.7
+      }
+    ]
+  }
 }

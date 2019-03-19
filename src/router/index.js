@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import Registration from '@/components/auth/Registration'
 import Login from '@/components/auth/Login'
-import Profile from '@/components/edit/Profile'
+import Profile from '@/components/profile/Profile'
 import Timeline from '@/components/timeline/Timeline'
 import store from '@/store'
 
@@ -44,9 +44,10 @@ export default new Router({
 })
 
 function AuthGuard (from, to, next) {
-  if (store.getters.isAuthenticated) {
-    next()
-  } else {
-    next('/registration')
-  }
+  store.getters.isAuthenticated ? next() : next('/login')
+//   if (store.getters.isAuthenticated) {
+//     next()
+//   } else {
+//     next('/login')
+//   }
 }

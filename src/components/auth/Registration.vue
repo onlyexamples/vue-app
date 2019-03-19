@@ -1,6 +1,6 @@
 <template lang="pug">
   .registration
-    form.registration-form(name="registration-form" @submit.prevent="signUp")
+    form.form(name="registration-form" @submit.prevent="signUp")
       h1.title Регистрация
 
       .form-overlay
@@ -8,19 +8,16 @@
           span(v-if="error" :value="error") {{ error.message }}
 
         .form-field
-          label.label
-            | Элекронная почта
-            input.field(name="email" type="text" placeholder="Введите e-mail" v-model="email" required)
+          label.label Элекронная почта
+          input.field(name="email" type="text" placeholder="Введите e-mail" v-model="email" required)
 
         .form-field
-          label.label
-            | Пароль
-            input.field(name="password" type="password" placeholder="Введите пароль" v-model="password" required)
+          label.label Пароль
+          input.field(name="password" type="password" placeholder="Введите пароль" v-model="password" required)
 
         .form-field
-          label.label
-            | Подтверждение
-            input.field(name="confirm_password" type="password" placeholder="Повторите пароль" v-model="confirmPassword" required)
+          label.label Подтверждение
+          input.field(name="confirm_password" type="password" placeholder="Повторите пароль" v-model="confirmPassword" required)
 
         .form-field
           label.label
@@ -76,10 +73,5 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-  }
-
-  .registration-form {
-    width: 100%;
-    max-width: 300px;
   }
 </style>

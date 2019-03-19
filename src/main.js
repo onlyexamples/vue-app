@@ -10,7 +10,10 @@ import router from './router'
 
 Vue.config.productionTip = false
 firebase.initializeApp(config)
-// export const db = firebase.firestore()
+const db = firebase.firestore()
+const firebaseStorage = firebase.storage()
+Vue.$db = db
+Vue.$firebaseStorage = firebaseStorage
 
 /* eslint-disable no-new */
 new Vue({

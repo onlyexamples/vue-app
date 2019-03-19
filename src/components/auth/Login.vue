@@ -1,6 +1,6 @@
 <template lang="pug">
   .login
-    form.login-form(name="login-form" @submit.prevent="signIn")
+    form.form(name="login-form" @submit.prevent="signIn")
       h1.title Вход
 
       .form-overlay
@@ -8,14 +8,12 @@
           span(v-if="error" :value="error") {{ error.message }}
 
         .form-field
-          label.label
-            | Элекронная почта
-            input.field(name="email" type="text" placeholder="Введите e-mail" v-model="email" required)
+          label.label Элекронная почта
+          input.field(name="email" type="text" placeholder="Введите e-mail" v-model="email" required)
 
         .form-field
-          label.label
-            | Пароль
-            input.field(name="password" type="password" placeholder="Введите пароль" v-model="password" required)
+          label.label Пароль
+          input.field(name="password" type="password" placeholder="Введите пароль" v-model="password" required)
 
         button.button(type="submit") Войти
 </template>
@@ -65,10 +63,5 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-  }
-
-  .login-form {
-    width: 100%;
-    max-width: 300px;
   }
 </style>

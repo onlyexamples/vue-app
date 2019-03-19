@@ -61,6 +61,7 @@ const actions = {
   STATE_CHANGED ({commit}, payload) {
     if (payload) {
       commit('SET_USER', payload.uid)
+      commit('loadUserData', payload.uid)
     } else {
       commit('UNSET_USER')
     }
@@ -68,9 +69,9 @@ const actions = {
 }
 
 const getters = {
-  isAuthenticated: state => state.authenticated
+  isAuthenticated: state => state.authenticated,
+  userId: state => state.uid
   // profile: state => state.profile,
-  // userId: state => state.profile.userId
 }
 
 const userModule = {

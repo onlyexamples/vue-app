@@ -22,13 +22,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'bornData'
-    ])
+    ...mapGetters(['bornData'])
   },
 
   created () {
-    this.$store.dispatch('getBornData')
+    // this.$store.dispatch('loadBornData')
   }
 }
 </script>

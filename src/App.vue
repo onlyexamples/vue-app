@@ -26,12 +26,16 @@ export default {
 
   :root {
   --font-color: #4A6572;
-  --title-color: darkcyan;
-  --primary-color: #b715a2;
+  --primary-color: #6f59ae;
+  --title-color: var(--primary-color);
+  /* --primary-color: #b715a2; */
   --second-color: #F9AA33;
   --bg-color: #fca5f1;
   --bg-color--2: #b5ffff;
   --main-gradient: linear-gradient(45deg, var(--bg-color), var(--bg-color--2));
+  --second-gradient: linear-gradient(to right, #6f59ae, #AA59C6);
+  /* --second-gradient: linear-gradient(to right, #444991, #7552aa);
+  --second-gradient: linear-gradient(to right, #C55EB6, #FF698B); */
   --disable-color: rgb(202, 202, 202);
   }
 
@@ -65,6 +69,11 @@ export default {
     font-size: 1.4em;
   }
 
+  .form {
+    width: 100%;
+    max-width: 300px;
+  }
+
   .form-overlay {
     padding: 20px 15px;
     background: rgba(255, 255, 255, 0.3);
@@ -75,18 +84,31 @@ export default {
     margin-bottom: 25px;
   }
 
+  .form-field--twice {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .form-field__part {
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+  }
+
   .form-field--error {
     color: tomato;
   }
 
   .label {
+    display: block;
+    margin-bottom: 10px;
     color: currentColor;
     font-size: 12px;
   }
 
   .field {
     width: 100%;
-    margin-top: 10px;
     padding: 10px;
     border: 0;
     border-bottom: 1px solid var(--primary-color);
@@ -97,31 +119,36 @@ export default {
 
   .field:focus {
     border-bottom-color: transparent;
-    box-shadow: 0 0 5px var(--bg-color);
+    box-shadow: 0 0 5px var(--primary-color);
   }
 
+  .button-upload,
   form .button {
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 10px 25px;
     border: 0;
     border-radius: 30px;
-    background: var(--main-gradient);
+    background: var(--second-gradient);
     color: white;
-    text-shadow: 0 0 3px var(--primary-color);
-    box-shadow: 0 0 5px var(--primary-color);
     outline: none;
     font-weight: bold;
   }
 
-  form .button:focus {
-    box-shadow: 0 0 15px var(--primary-color);
+  .button-upload {
+    cursor: pointer;
   }
 
+  .button-upload:focus,
+  form .button:focus {
+    box-shadow: 5px 5px 40px var(--primary-color);
+  }
+
+  .button-upload:disabled,
   form .button:disabled {
     background: var(--disable-color);
     box-shadow: none;
-    text-shadow: none;
   }
 
   .checkbox {
@@ -132,5 +159,22 @@ export default {
 
   .checkbox:focus {
     box-shadow: 0 0 5px var(--primary-color);
+  }
+
+  .button-upload {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .button-upload input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
   }
 </style>
