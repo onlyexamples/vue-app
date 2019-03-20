@@ -23,7 +23,9 @@ const mutations = {
   },
 
   ADD_NEW_MONTH (state, payload) {
-    Vue.set(state.userBaby.months, payload)
+    console.log(payload)
+    state.userBaby.months = { ...state.userBaby.months, [payload.monthNumber]: payload.data }
+    // Vue.set(state.userBaby.months, { [payload.monthNumber]: payload.data })
   },
 
   LOAD_BORN_DATA (state, payload) {
@@ -84,18 +86,19 @@ const actions = {
     commit('SET_LOADING', true)
     let userDataRef = Vue.$db.collection('userData').doc(getters.userId)
     let babyMonthsRef = userDataRef.collection('userBaby').doc('months')
+    let monthData = {
+      tooth: payload.tooth,
+      weight: payload.weight,
+      height: payload.height,
+      photo: payload.photo
+    }
 
     babyMonthsRef.set({
-      [payload.monthNumber]: {
-        tooth: payload.tooth,
-        weight: payload.weight,
-        height: payload.height,
-        photo: payload.photo
-      }
+      [payload.monthNumber]: monthData
     }, { merge: true }) // merge: true - чтобы не перезаписывалось, а добавлялось
       .then(() => {
         commit('SET_LOADING', false)
-        commit('ADD_NEW_MONTH', payload)
+        commit('ADD_NEW_MONTH', { monthNumber: payload.monthNumber, data: monthData })
       })
       .catch((error) => {
         commit('SET_LOADING', false)

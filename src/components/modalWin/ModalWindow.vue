@@ -7,7 +7,7 @@
         .modal-window
           h3.modal-window__title Создание нового месяца
 
-          form.form(name="month" @submit.prevent="saveNewMonthData")
+          form.form(ref="addNewMonthForm" name="month" @submit.prevent="saveNewMonthData")
             .form-field.form-field--twice
               .form-field__part
                 label.label(for="month_number") Номер месяца
@@ -30,13 +30,16 @@
             .form-field
               label.label(for="month_photo") Фото месяца
 
-              .button-upload__file
-                span.button-upload__progress Загруженно: {{ progressUpload }}%
-                span.button-upload__file-name {{ photoName }}
-                button.button.button--delete(@click="deletePhoto") Удалить
-              .button-upload
-                span.button-upload__text Загрузить фото
-                input.field(id="month_photo" name="photo" type="file" @change="getFileName($event)" required)
+              .upload
+                .button-upload__info(v-show="uploading")
+                  .button-upload__file
+                    span.button-upload__progress(v-if="uploading") Загруженно: {{ progressUpload }}%
+                    span.button-upload__file-name {{ photoName }}
+                  button.button.button--delete(v-if="photoName" @click="deletePhoto") Удалить
+
+                .button-upload
+                  span.button-upload__text Загрузить фото
+                  input(id="month_photo" name="photo" type="file" @change="getFileName($event)" required)
 
             button.button(:disabled="loading") Сохранить
 </template>
@@ -81,6 +84,7 @@ export default {
     },
 
     clearForm () {
+      this.$refs.addNewMonthForm.reset()
     },
 
     getFileName (e) {
@@ -158,7 +162,8 @@ export default {
     height: 40px;
     border: 2px solid var(--primary-color);
     border-radius: 50%;
-    background: white;
+    background: white url("~@/assets/images/icons/close.svg") center no-repeat;
+    background-size: 70%;
     text-indent: -9999px;
   }
 </style>

@@ -123,7 +123,7 @@ export default {
   }
 
   .button-upload,
-  form .button {
+  .button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -136,19 +136,53 @@ export default {
     font-weight: bold;
   }
 
+  .button--delete {
+    width: 25px;
+    height: 30px;
+    padding: 0;
+    color: var(--primary-color);
+    background: url("~@/assets/images/icons/delete.svg") center no-repeat;
+    background-size: cover;
+    text-indent: -9999px;
+  }
+
   .button-upload {
+    max-width: 180px;
+    padding: 0;
+    color: var(--primary-color);
     cursor: pointer;
+    border: 1px solid;
+    background: none;
+  }
+
+  .button-upload__text {
+    padding: 10px 15px 10px 40px;
+    background: url("~@/assets/images/icons/image.svg") 10px center no-repeat;
+    background-size: 20px;
   }
 
   .button-upload:focus,
-  form .button:focus {
+  .button:focus {
     box-shadow: 5px 5px 40px var(--primary-color);
   }
 
   .button-upload:disabled,
-  form .button:disabled {
+  .button:disabled {
     background: var(--disable-color);
     box-shadow: none;
+  }
+
+  .button-upload__info {
+    display: flex;
+    justify-content: space-beatween;
+    margin-bottom: 15px;
+  }
+
+  .button-upload__file {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-right: 15px;
   }
 
   .checkbox {
@@ -172,9 +206,10 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    width: auto;
+    width: 100%;
     margin: 0;
     padding: 0;
+    border-radius: 30px;
     opacity: 0;
   }
 </style>
