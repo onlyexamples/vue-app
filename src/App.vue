@@ -3,7 +3,6 @@
     nav.header-nav
       navigation
     .content
-      //- router-view(:months="months" :bornData="bornData")
       router-view
 </template>
 
@@ -55,7 +54,7 @@ export default {
 
   .header-nav {
     position: fixed;
-    z-index: 10;
+    z-index: 15;
     width: 100%;
   }
 
@@ -64,9 +63,18 @@ export default {
   }
 
   .title {
-    margin: 0 0 25px;
     color: var(--title-color);
     font-size: 1.4em;
+  }
+
+  .link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .link:hover {
+    text-decoration: underline;
   }
 
   .form {
@@ -79,7 +87,7 @@ export default {
     background: rgba(255, 255, 255, 0.3);
    }
 
-  .form-field {
+  .form-field:not(:empty) {
     width: 100%;
     margin-bottom: 25px;
   }
@@ -122,6 +130,11 @@ export default {
     box-shadow: 0 0 5px var(--primary-color);
   }
 
+  .form--editable .field:disabled {
+    border-bottom: 0;
+    appearance: none;
+  }
+
   .button-upload,
   .button {
     display: flex;
@@ -146,13 +159,29 @@ export default {
     text-indent: -9999px;
   }
 
+  .button--options {
+    width: 35px;
+    height: 35px;
+    margin-left: 10px;
+    padding: 5px;
+    border-radius: 50%;
+    background: white;
+    color: inherit;
+    opacity: 0;
+    transition: opacity .4s;
+  }
+
+  .button--transparent,
   .button-upload {
-    max-width: 180px;
-    padding: 0;
     color: var(--primary-color);
     cursor: pointer;
     border: 1px solid;
     background: none;
+  }
+
+  .button-upload {
+    max-width: 180px;
+    padding: 0;
   }
 
   .button-upload__text {
@@ -183,6 +212,10 @@ export default {
     flex-direction: column;
     align-items: flex-start;
     margin-right: 15px;
+  }
+
+  .button__icon {
+    width: 80%;
   }
 
   .checkbox {

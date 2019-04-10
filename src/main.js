@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import 'firebase/storage'
 import config from '@/db/firebase/config/index'
 import store from './store'
 import App from './App'
@@ -22,7 +23,7 @@ new Vue({
   render: h => h(App),
   created () {
     firebase.auth().onAuthStateChanged((user) => {
-      this.$store.dispatch('STATE_CHANGED', user)
+      this.$store.dispatch('stateChanged', user)
     })
   }
 }).$mount('#app')

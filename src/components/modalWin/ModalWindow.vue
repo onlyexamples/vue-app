@@ -1,17 +1,23 @@
 <template lang="pug">
   transition(name="fade")
-    .modal-window__overlay
+    .modal
+      .modal-window__overlay(@click="$emit('close')")
       .modal-window__wrapper
         button.modal-button(@click="$emit('close')") Закрыть
 
         .modal-window
           h3.modal-window__title Создание нового месяца
 
-          form.form(ref="addNewMonthForm" name="month" @submit.prevent="saveNewMonthData")
+          form.form(name="month" @submit.prevent="saveNewMonthData")
             .form-field.form-field--twice
               .form-field__part
                 label.label(for="month_number") Номер месяца
-                select.field(id="month_number" name="monthNumber" v-model="monthNumber" required)
+                select.field(
+                  id="month_number"
+                  name="monthNumber"
+                  v-model="monthNumber"
+                  required
+                )
                   option(v-for="monthNumber in 12" :value="monthNumber") {{ monthNumber }}
 
               .form-field__part
@@ -33,15 +39,18 @@
               .upload
                 .button-upload__info(v-show="uploading")
                   .button-upload__file
-                    span.button-upload__progress(v-if="uploading") Загруженно: {{ progressUpload }}%
+                    span.button-upload__progress {{ uploadEnd ? "Файл загружен!" : `Загруженно: ${progressUpload} %` }}
                     span.button-upload__file-name {{ photoName }}
                   button.button.button--delete(v-if="photoName" @click="deletePhoto") Удалить
 
                 .button-upload
                   span.button-upload__text Загрузить фото
-                  input(id="month_photo" name="photo" type="file" @change="getFileName($event)" required)
+                  input(ref="uploadInput" id="month_photo" name="photo" type="file" @change="getFileName($event)" required)
 
             button.button(:disabled="loading") Сохранить
+            //- .notify.notify--success
+            //-   .notify__icon &#10004;
+            //-   .notify__message Данные успешно сохранены!
 </template>
 
 <script>
@@ -79,12 +88,19 @@ export default {
         height: this.height,
         photo: this.downloadURL
       })
-
-      this.clearForm()
+        .then(() => {
+          this.clearform()
+        })
     },
 
-    clearForm () {
-      this.$refs.addNewMonthForm.reset()
+    clearform () {
+      this.monthNumber = 0
+      this.tooth = 0
+      this.weight = 0
+      this.height = 0
+      this.downloadURL = ''
+      this.$refs.uploadInput.value = null
+      this.uploading = false
     },
 
     getFileName (e) {
@@ -131,6 +147,13 @@ export default {
 </script>
 
 <style lang="postcss">
+  .modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal,
   .modal-window__overlay {
     position: fixed;
     z-index: 1000;
@@ -139,14 +162,12 @@ export default {
     right: 0;
     bottom: 0;
     padding: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background: rgba(0, 0, 0, 0.7);
   }
 
   .modal-window__wrapper {
     position: relative;
+    z-index: 2000;
   }
 
   .modal-window {

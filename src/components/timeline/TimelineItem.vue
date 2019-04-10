@@ -1,9 +1,5 @@
 <template lang="pug">
   li.timeline-item
-    img.timeline-item__photo(:src="getImgUrl(month.photo)")
-    //- img.timeline-item__photo(:src="`@/assets/images/photos/${month.photo}`")
-    //- .timeline-item__photo(:style="{ backgroundImage: `url(${require(`@/assets/images/photos/${month.photo}`)})` }")
-
     .timeline-item__sizes
       .timeline-item__size.timeline-item__size--height
         span {{ month.height }} см
@@ -15,6 +11,17 @@
 
       .timeline-item__tooth(v-if="month.tooth")
         span.timeline-item__tooth-count +{{ month.tooth }}
+
+    .timeline-item__photo
+      img(:src="month.photo")
+      //- .timeline-item__photo(:style="{ backgroundImage: `url(${require(`@/assets/images/photos/${month.photo}`)})` }")
+
+      .timeline-item__options
+        button.button.button--options(@click="openModalWindow")
+          img.button__icon(src="@/assets/images/icons/edit.svg")
+        button.button.button--options(@click="removeMonthData")
+          img.button__icon(src="@/assets/images/icons/delete.svg")
+
 </template>
 
 <script>
@@ -24,9 +31,11 @@ export default {
   props: ['month'],
 
   methods: {
-    getImgUrl (url) {
-      const images = require.context('@/assets/images/photos/', false, /\.jpg$/)
-      return images(`./${url}`)
+    removeMonthData () {
+    },
+
+    openModalWindow () {
+      this.$emit('openModalWindow')
     }
   }
 }
@@ -35,12 +44,12 @@ export default {
 <style lang="postcss">
   .timeline-item {
     position: absolute;
+    z-index: 5;
     top: 0;
     opacity: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: row-reverse;
     width: 100vw;
     height: 100vh;
     padding: 70px 80px 20px 15px;
@@ -48,10 +57,27 @@ export default {
   }
 
   .timeline-item--active {
+    z-index: 10;
     opacity: 1;
   }
 
+  .timeline-item:hover .button--options {
+    opacity: 1;
+  }
+
+  .timeline-item__options {
+    position: absolute;
+    top: -17px;
+    right: -17px;
+    display: flex;
+    flex-wrap: nowrap;
+  }
+
   .timeline-item__photo {
+    position: relative;
+  }
+
+  .timeline-item__photo img {
     overflow: hidden;
     max-width: 700px;
     max-height: 500px;

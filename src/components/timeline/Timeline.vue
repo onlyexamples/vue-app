@@ -2,8 +2,15 @@
   .timeline
     //- born-data(:bornData="bornData")
     div.timeline-scale
-      timeline-buttons
-      timeline-list
+      timeline-buttons(v-if="isMonthsListExists")
+      timeline-list(
+        :isMonthsListExists="isMonthsListExists"
+        :months="months"
+        :showModal="showModal"
+        @showModalWindow="showModalWindow"
+      )
+
+    modal-window(v-show="showModal" @close="showModal = false")
 </template>
 
 <script>
@@ -11,6 +18,7 @@ import { mapGetters } from 'vuex'
 import BornData from '@/components/born/BornData'
 import TimelineButtons from '@/components/timeline/TimelineButtons'
 import TimelineList from '@/components/timeline/TimelineList'
+import ModalWindow from '@/components/modalWin/ModalWindow'
 
 export default {
   name: 'Timeline',
@@ -18,15 +26,36 @@ export default {
   components: {
     'born-data': BornData,
     'timeline-buttons': TimelineButtons,
-    'timeline-list': TimelineList
+    'timeline-list': TimelineList,
+    'modal-window': ModalWindow
+  },
+
+  data () {
+    return {
+      showModal: false,
+      monthsLength: 0
+    }
   },
 
   computed: {
-    ...mapGetters(['bornData'])
+    ...mapGetters(['bornData', 'months']),
+
+    isMonthsListExists () {
+      if (this.monthsLength > 0) {
+        return true
+      }
+      return false
+    }
   },
 
   created () {
-    // this.$store.dispatch('loadBornData')
+    this.monthsLength = Object.keys(this.months).length
+  },
+
+  methods: {
+    showModalWindow () {
+      this.showModal = true
+    }
   }
 }
 </script>

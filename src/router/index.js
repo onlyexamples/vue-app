@@ -45,9 +45,4 @@ export default new Router({
 
 function AuthGuard (from, to, next) {
   store.getters.isAuthenticated ? next() : next('/login')
-//   if (store.getters.isAuthenticated) {
-//     next()
-//   } else {
-//     next('/login')
-//   }
 }

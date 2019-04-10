@@ -22,7 +22,7 @@
         .form-field
           label.label
             input.checkbox(type="checkbox")
-            | Я согласен с правилами
+            | Я согласен с #[a.link(href="#") правилами]
 
         button.button(:disabled="loading") Зарегистрироваться
 </template>
@@ -61,7 +61,9 @@ export default {
 
   methods: {
     signUp () {
-      this.$store.dispatch('signUp', { email: this.email, password: this.password })
+      if (this.password === this.confirmPassword) {
+        this.$store.dispatch('signUp', { email: this.email, password: this.password })
+      }
     }
   }
 }
