@@ -2,15 +2,25 @@
   .timeline
     //- born-data(:bornData="bornData")
     div.timeline-scale
-      timeline-buttons(v-if="isMonthsListExists")
+      timeline-buttons(v-if="isMonthListExist" :changeActiveItem="changeActiveItem")
       timeline-list(
-        :isMonthsListExists="isMonthsListExists"
+        :isMonthListExist="isMonthListExist"
         :months="months"
+        :isActiveItem="isActiveItem"
         :showModal="showModal"
         @showModalWindow="showModalWindow"
       )
 
-    modal-window(v-show="showModal" @close="showModal = false")
+      .timeline__empty-month(v-if="isMonthListExist && activeEmptyItem")
+        p Данные {{ activeEmptyItem }}-го месяца отсутствуют.
+        button.button.button--transparent(@click="showModalWindow(activeEmptyItem)") + Добавить данные
+
+    modal-window(
+      v-show="showModal"
+      @close="showModal = false"
+      :activeItemData="activeItemData"
+      :isExistsMonth="isExistsMonth"
+    )
 </template>
 
 <script>
@@ -32,29 +42,44 @@ export default {
 
   data () {
     return {
-      showModal: false,
-      monthsLength: 0
+      isExistsMonth: false,
+      isActiveItem: 1,
+      activeItemData: {},
+      showModal: false
     }
   },
 
   computed: {
     ...mapGetters(['bornData', 'months']),
 
-    isMonthsListExists () {
-      if (this.monthsLength > 0) {
-        return true
-      }
-      return false
+    activeEmptyItem () {
+      if (!this.months[this.isActiveItem]) { return this.isActiveItem }
+    },
+
+    isMonthListExist () {
+      return Object.keys(this.months).length > 0
     }
   },
 
-  created () {
-    this.monthsLength = Object.keys(this.months).length
-  },
-
   methods: {
-    showModalWindow () {
+    changeActiveItem (num) {
+      this.isActiveItem = num
+    },
+
+    showModalWindow (monthNumber) {
       this.showModal = true
+
+      if (monthNumber) {
+        const currentMonth = Object.keys(this.months).find(item => item === monthNumber)
+
+        if (currentMonth) {
+          this.activeItemData = this.months[currentMonth]
+          this.isExistsMonth = true
+        } else {
+          this.activeItemData = { monthNumber }
+          this.isExistsMonth = false
+        }
+      }
     }
   }
 }
@@ -74,5 +99,19 @@ export default {
     width: 100%;
     height: 100%;
     overflow: hidden;
+  }
+
+  .timeline__empty-month {
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    padding: 70px 80px 20px 15px;
+    transition: opacity 0.6s;
   }
 </style>

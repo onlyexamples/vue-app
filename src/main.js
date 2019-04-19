@@ -14,6 +14,7 @@ firebase.initializeApp(config)
 const db = firebase.firestore()
 const firebaseStorage = firebase.storage()
 Vue.$db = db
+Vue.$ff = firebase.firestore
 Vue.$firebaseStorage = firebaseStorage
 
 /* eslint-disable no-new */

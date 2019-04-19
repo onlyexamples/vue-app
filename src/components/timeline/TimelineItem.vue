@@ -19,7 +19,7 @@
       .timeline-item__options
         button.button.button--options(@click="openModalWindow")
           img.button__icon(src="@/assets/images/icons/edit.svg")
-        button.button.button--options(@click="removeMonthData")
+        button.button.button--options(@click="removeMonthData(month.monthNumber)")
           img.button__icon(src="@/assets/images/icons/delete.svg")
 
 </template>
@@ -31,7 +31,8 @@ export default {
   props: ['month'],
 
   methods: {
-    removeMonthData () {
+    removeMonthData (monthNumber) {
+      this.$store.dispatch('removeMonthData', monthNumber)
     },
 
     openModalWindow () {
@@ -153,5 +154,9 @@ export default {
     100% {
       transform: scale(1);
     }
+  }
+
+  .timeline-item--empty {
+    flex-direction: column;
   }
 </style>

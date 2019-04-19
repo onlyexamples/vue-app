@@ -135,6 +135,11 @@ export default {
     appearance: none;
   }
 
+  select:disabled {
+    background: rgba(0, 0, 0, 0.05);
+    border-bottom-color: transparent;
+  }
+
   .button-upload,
   .button {
     display: flex;
@@ -180,7 +185,6 @@ export default {
   }
 
   .button-upload {
-    max-width: 180px;
     padding: 0;
   }
 

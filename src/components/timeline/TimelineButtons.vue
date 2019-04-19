@@ -24,6 +24,13 @@
 export default {
   name: 'TimelineButtons',
 
+  props: {
+    changeActiveItem: {
+      type: Function,
+      required: true
+    }
+  },
+
   data () {
     return {
       isDisabledTopArrow: true,
@@ -55,21 +62,8 @@ export default {
     },
 
     changeActiveStep (newStep) {
-      this.slideStep(newStep)
+      this.changeActiveItem(newStep)
       this.isActive = newStep
-    },
-
-    slideStep (newStep) {
-      const item = document.getElementById(`item-${newStep}`)
-
-      this.changeActiveItem(item)
-    },
-
-    changeActiveItem (item) {
-      const activeClass = 'timeline-item--active'
-
-      document.querySelector(`.${activeClass}`).classList.remove(activeClass)
-      item.classList.add(activeClass)
     }
   }
 }
@@ -96,13 +90,13 @@ export default {
 
   .timeline-arrow {
     position: absolute;
-    left: 12.5px;
+    left: 0;
     z-index: 15;
-    width: 25px;
+    width: 100%;
     height: 25px;
     background: url("~@/assets/images/icons/chevron-down.svg") center no-repeat;
-    background-size: cover;
-    transition: transform .2s;
+    background-size: 30%;
+    transition: background-color .2s;
     text-indent: 9999px;
     font-size: 40px;
     line-height: 1.1;
@@ -113,16 +107,12 @@ export default {
   }
 
   .timeline-arrow:hover:not(:disabled) {
-    transform: scale(1.4);
+    background-color: white;
   }
 
   .timeline-arrow--top {
     top: -40px;
     transform: rotate(180deg);
-  }
-
-  .timeline-arrow--top:hover:not(:disabled) {
-    transform: scale(1.5) rotate(180deg);
   }
 
   .timeline-arrow--bottom {

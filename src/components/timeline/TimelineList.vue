@@ -1,23 +1,15 @@
 <template lang="pug">
-  ul.timeline-list(v-if="isMonthsListExists")
+  ul.timeline-list(v-if="isMonthListExist")
     timeline-item(
       v-for="(month, key) in months"
       :month="month"
       :key="key"
       :id="`item-${key}`"
       :class="{ 'timeline-item--active': isActiveItem == key }"
-      @openModalWindow="$emit('showModalWindow')"
+      @openModalWindow="$emit('showModalWindow', key)"
     )
 
-    timeline-item-empty(
-      v-for="monthNumber in emptyMonths"
-      :monthNumber="countMounthNumber(monthNumber)"
-      :key="countMounthNumber(monthNumber)"
-      :id="`item-${countMounthNumber(monthNumber)}`"
-      @openModalWindow="$emit('showModalWindow')"
-    )
-
-  .timeline-list--empty(v-else="isMonthsListExists")
+  .timeline-list--empty(v-else="isMonthListExist")
     .timeline-list__text
       | Данные отсутствуют.
       br
@@ -25,34 +17,27 @@
 </template>
 
 <script>
-// import Vue from 'vue'
 import TimelineItem from '@/components/timeline/TimelineItem'
-import TimelineItemEmpty from '@/components/timeline/TimelineItemEmpty'
 
 export default {
   name: 'TimelineList',
 
   components: {
-    'timeline-item': TimelineItem,
-    'timeline-item-empty': TimelineItemEmpty
-  },
-
-  data () {
-    return {
-      isActiveItem: 1,
-      monthsLength: 0,
-      emptyMonths: 0,
-      emptyMonthsArr: []
-    }
+    'timeline-item': TimelineItem
   },
 
   props: {
+    isActiveItem: {
+      type: Number,
+      required: true
+    },
+
     months: {
       type: Object,
       required: true
     },
 
-    isMonthsListExists: {
+    isMonthListExist: {
       type: Boolean,
       required: true
     },
@@ -60,17 +45,6 @@ export default {
     showModal: {
       type: Boolean,
       required: true
-    }
-  },
-
-  created () {
-    this.monthsLength = Object.keys(this.months).length
-    this.emptyMonths = 12 - this.monthsLength
-  },
-
-  methods: {
-    countMounthNumber (monthNumber) {
-      return this.monthsLength + monthNumber
     }
   }
 }

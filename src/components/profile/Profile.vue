@@ -54,6 +54,14 @@ export default {
 
     saveUserData () {
       // this.$store.dispatch('addBornData', { date: this.bornDate, weight: this.bornWeight, height: this.bornHeight })
+      this.$store.dispatch('changeUserProfileData', {
+        name: this.name,
+        email: this.email,
+        password: this.password,
+        date: this.bornDate,
+        weight: this.bornWeight,
+        height: this.bornHeight
+      })
     }
   }
 }

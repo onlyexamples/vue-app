@@ -8,7 +8,7 @@
         .modal-window
           h3.modal-window__title Создание нового месяца
 
-          form.form(name="month" @submit.prevent="saveNewMonthData")
+          form.form(name="month" @submit.prevent="saveNewMonthData(isExistsMonth)")
             .form-field.form-field--twice
               .form-field__part
                 label.label(for="month_number") Номер месяца
@@ -16,22 +16,26 @@
                   id="month_number"
                   name="monthNumber"
                   v-model="monthNumber"
+                  :disabled="activeItemData"
                   required
                 )
-                  option(v-for="monthNumber in 12" :value="monthNumber") {{ monthNumber }}
+                  option(
+                    v-for="monthNumber in 12"
+                    :value="monthNumber"
+                  ) {{ monthNumber }}
 
               .form-field__part
                 label.label(for="month_tooth") Зубы (шт.)
-                input.field(name="monthTooth" type="number" v-model="tooth")
+                input.field(name="monthTooth" type="number" min="0" v-model="tooth")
 
             .form-field.form-field--twice
               .form-field__part
                 label.label(for="month_weight") Вес (гр.)
-                input.field(name="monthWeight" type="number" v-model="weight" required)
+                input.field(name="monthWeight" type="number" min="0" v-model="weight" required)
 
               .form-field__part
                 label.label(for="month_height") Рост (см.)
-                input.field(name="monthHeight" type="number" v-model="height" required)
+                input.field(name="monthHeight" type="number" min="0" v-model="height" required)
 
             .form-field
               label.label(for="month_photo") Фото месяца
@@ -40,12 +44,12 @@
                 .button-upload__info(v-show="uploading")
                   .button-upload__file
                     span.button-upload__progress {{ uploadEnd ? "Файл загружен!" : `Загруженно: ${progressUpload} %` }}
-                    span.button-upload__file-name {{ photoName }}
-                  button.button.button--delete(v-if="photoName" @click="deletePhoto") Удалить
+                    span.button-upload__file-name(v-if="photoName") {{ photoName }}
+                  button.button.button--delete(v-if="photoName" @click.prevent="deletePhoto") Удалить
 
                 .button-upload
-                  span.button-upload__text Загрузить фото
-                  input(ref="uploadInput" id="month_photo" name="photo" type="file" @change="getFileName($event)" required)
+                  span.button-upload__text {{ activeItemData ? 'Загрузить новое фото' : 'Загрузить фото'}}
+                  input(ref="uploadInput" id="month_photo" name="photo" type="file" @change="getFileName($event)")
 
             button.button(:disabled="loading") Сохранить
             //- .notify.notify--success
@@ -59,6 +63,16 @@ import Vue from 'vue'
 
 export default {
   name: 'ModalWindow',
+
+  props: {
+    activeItemData: {
+      type: Object
+    },
+
+    isExistsMonth: {
+      type: Boolean
+    }
+  },
 
   data () {
     return {
@@ -80,17 +94,19 @@ export default {
   },
 
   methods: {
-    saveNewMonthData () {
-      this.$store.dispatch('addNewMonth', {
+    saveNewMonthData (isExistsMonth) {
+      let data = {
         monthNumber: this.monthNumber,
         tooth: this.tooth,
         weight: this.weight,
         height: this.height,
         photo: this.downloadURL
-      })
-        .then(() => {
-          this.clearform()
-        })
+      }
+
+      if (!isExistsMonth) {
+        this.clearform()
+      }
+      this.$store.dispatch('updateMonthsData', data)
     },
 
     clearform () {
@@ -141,6 +157,16 @@ export default {
           this.downloadURL = downloadURL
         })
       })
+    },
+
+    activeItemData () {
+      if (this.activeItemData) {
+        this.monthNumber = this.activeItemData.monthNumber || 0
+        this.tooth = this.activeItemData.tooth || 0
+        this.weight = this.activeItemData.weight || 0
+        this.height = this.activeItemData.height || 0
+        this.downloadURL = this.activeItemData.photo || ''
+      }
     }
   }
 }

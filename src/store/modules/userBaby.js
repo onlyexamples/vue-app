@@ -15,8 +15,12 @@ const mutations = {
     Vue.set(state.bornData, payload)
   },
 
-  ADD_NEW_MONTH (state, payload) {
+  UPDATE_MONTHS_DATA (state, payload) {
     state.months = { ...state.months, [payload.monthNumber]: payload.data }
+  },
+
+  REMOVE_MONTH (state, payload) {
+    Vue.delete(state.months, payload)
   }
 }
 
@@ -28,9 +32,7 @@ const actions = {
     userBabyDataDoc.get()
       .then((data) => {
         let userBabyData = data.exists ? data.data() : console.log('Данный документ не существует!')
-        // console.log(data)
-        // console.log(data.exists)
-        console.log(userBabyData)
+        // console.log(userBabyData)
 
         commit('SET_USER_DATA', userBabyData)
         commit('SET_LOADING', false)
@@ -42,6 +44,7 @@ const actions = {
   },
 
   addBornData ({ commit, getters }, payload) {
+    commit('CLEAR_ERROR')
     commit('SET_LOADING', true)
     let userBabyDataDoc = Vue.$db.collection('userBabyData').doc(getters.userId)
     const bornData = {
@@ -49,6 +52,7 @@ const actions = {
       weight: payload.bornWeight,
       height: payload.bornHeight
     }
+
     userBabyDataDoc.set({
       bornData: bornData
     }, { merge: true }) // merge: true - чтобы не перезаписывалось, а добавлялось
@@ -62,14 +66,16 @@ const actions = {
       })
   },
 
-  addNewMonth ({ commit, getters }, payload) {
+  updateMonthsData ({ commit, getters }, payload) {
+    commit('CLEAR_ERROR')
     commit('SET_LOADING', true)
     let userBabyDataDoc = Vue.$db.collection('userBabyData').doc(getters.userId)
-    // let babyMonths = userBabyDataDoc.collection('months')
+
     let monthData = {
-      tooth: payload.tooth,
-      weight: payload.weight,
-      height: payload.height,
+      monthNumber: parseInt(payload.monthNumber),
+      tooth: parseInt(payload.tooth),
+      weight: parseInt(payload.weight),
+      height: parseInt(payload.height),
       photo: payload.photo
     }
 
@@ -79,7 +85,25 @@ const actions = {
       }
     }, { merge: true }) // merge: true - чтобы не перезаписывалось, а добавлялось
       .then(() => {
-        commit('ADD_NEW_MONTH', { monthNumber: payload.monthNumber, data: monthData })
+        commit('UPDATE_MONTHS_DATA', { monthNumber: payload.monthNumber, data: monthData })
+        commit('SET_LOADING', false)
+      })
+      .catch((error) => {
+        commit('SET_LOADING', false)
+        throw error
+      })
+  },
+
+  removeMonthData ({ commit, getters }, payload) {
+    commit('CLEAR_ERROR')
+    commit('SET_LOADING', true)
+    let userBabyDataDoc = Vue.$db.collection('userBabyData').doc(getters.userId)
+
+    userBabyDataDoc.update({
+      [`months.${payload}`]: Vue.$ff.FieldValue.delete()
+    })
+      .then(() => {
+        commit('REMOVE_MONTH', payload)
         commit('SET_LOADING', false)
       })
       .catch((error) => {

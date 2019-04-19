@@ -66,6 +66,33 @@ const actions = {
       })
   },
 
+  changeUserProfileData ({commit}, payload) {
+    let user = firebase.auth().currentUser
+    let credential = firebase.auth.EmailAuthProvider.credential(
+      payload.email,
+      payload.password
+    )
+
+    commit('CLEAR_ERROR')
+    commit('SET_LOADING', true)
+    // user.updateProfile({})
+    user.reauthenticateAndRetrieveDataWithCredential(credential)
+      .then(() => {
+        commit('SET_LOADING', false)
+
+        user.updateProfile({
+          email: payload.email,
+          password: payload.password,
+          displayName: payload.name
+        })
+      })
+      .catch((error) => {
+        console.log(error)
+        commit('SET_ERROR', error)
+        commit('SET_LOADING', false)
+      })
+  },
+
   signOut () {
     firebase.auth().signOut()
   },
