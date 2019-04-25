@@ -1,8 +1,6 @@
 import firebase from 'firebase'
 
 const state = {
-  // password: '',
-  name: '',
   email: '',
   emailVerified: false,
   authenticated: false,
@@ -14,35 +12,34 @@ const mutations = {
     state.authenticated = true
     state.email = payload.email
     state.emailVerified = payload.emailVerified
-    state.name = payload.displayName
     state.uid = payload.id
   },
 
   UNSET_USER (state) {
     state.authenticated = false
     state.email = ''
-    state.username = ''
     state.uid = null
+  },
+
+  UPDATE_EMAIL (state, payload) {
+    state.email = payload.email
   }
 }
 
 const actions = {
-  signUp ({commit}, payload) {
+  signUp ({ commit }, payload) {
     commit('CLEAR_ERROR')
     commit('SET_LOADING', true)
 
     firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
-      .then(userData => {
+      .then(() => {
         firebase.auth().currentUser.sendEmailVerification()
           .then(() => {
-            // console.log(`https://first-year-8753e.firebaseapp.com/__/auth/action?mode=verifyEmail&oobCode=${userData.user.uid}`)
             console.log('send Verification')
           })
           .catch(error => {
-            console.log('not send Verification')
-            throw error
+            commit('SET_ERROR', error)
           })
-        // commit('SET_USER', user.uid)
         commit('SET_LOADING', false)
       })
       .catch((error) => {
@@ -51,7 +48,7 @@ const actions = {
       })
   },
 
-  signIn ({commit}, payload) {
+  signIn ({ commit }, payload) {
     commit('CLEAR_ERROR')
     commit('SET_LOADING', true)
 
@@ -60,34 +57,44 @@ const actions = {
         commit('SET_LOADING', false)
       })
       .catch((error) => {
-        console.log(error)
         commit('SET_ERROR', error)
         commit('SET_LOADING', false)
       })
   },
 
-  changeUserProfileData ({commit}, payload) {
+  changeUserProfileData ({ commit }, payload) {
     let user = firebase.auth().currentUser
     let credential = firebase.auth.EmailAuthProvider.credential(
-      payload.email,
-      payload.password
+      user.email,
+      payload.oldPassword
     )
 
     commit('CLEAR_ERROR')
     commit('SET_LOADING', true)
-    // user.updateProfile({})
+
     user.reauthenticateAndRetrieveDataWithCredential(credential)
-      .then(() => {
+      .then(async () => {
         commit('SET_LOADING', false)
 
-        user.updateProfile({
-          email: payload.email,
-          password: payload.password,
-          displayName: payload.name
-        })
+        if (payload.email) {
+          await user.updateEmail(payload.email)
+            .then(() => { commit('UPDATE_EMAIL', payload.email) })
+            .catch((error) => {
+              commit('SET_ERROR', error)
+              commit('SET_LOADING', false)
+            })
+        }
+
+        if (payload.newPassword) {
+          await user.updatePassword(payload.newPassword)
+            .then(() => { console.log('Пароль обновлен!') })
+            .catch((error) => {
+              commit('SET_ERROR', error)
+              commit('SET_LOADING', false)
+            })
+        }
       })
       .catch((error) => {
-        console.log(error)
         commit('SET_ERROR', error)
         commit('SET_LOADING', false)
       })
@@ -102,7 +109,6 @@ const actions = {
       commit('SET_USER', {
         id: payload.uid,
         email: payload.email,
-        name: payload.displayName,
         emailVerified: payload.emailVerified
       })
       dispatch('loadUserBabyData', payload.uid)
@@ -115,15 +121,12 @@ const actions = {
 const getters = {
   userSettings: (state) => {
     return {
-      'name': state.name,
-      'email': state.email,
-      'emailVerified': state.emailVerified
-      // 'password': state.password
+      email: state.email,
+      emailVerified: state.emailVerified
     }
   },
   isAuthenticated: state => state.authenticated,
   userId: state => state.uid
-  // profile: state => state.profile,
 }
 
 const userModule = {

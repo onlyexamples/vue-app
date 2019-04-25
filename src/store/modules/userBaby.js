@@ -11,7 +11,7 @@ const mutations = {
     state.months = payload.months
   },
 
-  ADD_BORN_DATA (state, payload) {
+  UPDATE_BORN_DATA (state, payload) {
     Vue.set(state.bornData, payload)
   },
 
@@ -38,31 +38,26 @@ const actions = {
         commit('SET_LOADING', false)
       })
       .catch((error) => {
+        commit('SET_ERROR', error)
         commit('SET_LOADING', false)
-        throw error
       })
   },
 
-  addBornData ({ commit, getters }, payload) {
+  updateBornData ({ commit, getters }, payload) {
     commit('CLEAR_ERROR')
     commit('SET_LOADING', true)
     let userBabyDataDoc = Vue.$db.collection('userBabyData').doc(getters.userId)
-    const bornData = {
-      date: payload.bornDate,
-      weight: payload.bornWeight,
-      height: payload.bornHeight
-    }
 
     userBabyDataDoc.set({
-      bornData: bornData
-    }, { merge: true }) // merge: true - чтобы не перезаписывалось, а добавлялось
+      bornData: payload
+    }, { merge: true })
       .then(() => {
-        commit('ADD_BORN_DATA', payload)
+        commit('UPDATE_BORN_DATA', payload)
         commit('SET_LOADING', false)
       })
       .catch((error) => {
+        commit('SET_ERROR', error)
         commit('SET_LOADING', false)
-        throw error
       })
   },
 
@@ -89,8 +84,8 @@ const actions = {
         commit('SET_LOADING', false)
       })
       .catch((error) => {
+        commit('SET_ERROR', error)
         commit('SET_LOADING', false)
-        throw error
       })
   },
 
@@ -107,8 +102,8 @@ const actions = {
         commit('SET_LOADING', false)
       })
       .catch((error) => {
+        commit('SET_ERROR', error)
         commit('SET_LOADING', false)
-        throw error
       })
   }
 }
