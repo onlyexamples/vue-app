@@ -1,5 +1,5 @@
 <template lang="pug">
-  ul.timeline-list(v-if="isMonthListExist")
+  ul.timeline-list
     timeline-item(
       v-for="(month, key) in months"
       :month="month"
@@ -9,11 +9,10 @@
       @openModalWindow="$emit('showModalWindow', key)"
     )
 
-  .timeline-list--empty(v-else="isMonthListExist")
-    .timeline-list__text
-      | Данные отсутствуют.
-      br
-      | Для заполнения данных перейдите в #[router-link.link(to="/profile") профиль]
+    li.timeline-list__item(v-if="activeEmptyItem")
+      p Данные {{ activeEmptyItem }}-го месяца отсутствуют.
+      button.button.button--transparent(@click="$emit('showModalWindow', activeEmptyItem)") + Добавить данные
+
 </template>
 
 <script>
@@ -37,14 +36,15 @@ export default {
       required: true
     },
 
-    isMonthListExist: {
-      type: Boolean,
-      required: true
-    },
-
     showModal: {
       type: Boolean,
       required: true
+    }
+  },
+
+  computed: {
+    activeEmptyItem () {
+      if (!this.months[this.isActiveItem]) { return this.isActiveItem }
     }
   }
 }
@@ -61,19 +61,17 @@ export default {
     transition: all 1s;
   }
 
-  .timeline-list--empty {
+  .timeline-list__item {
+    position: absolute;
+    z-index: 5;
+    top: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.3);
-  }
-
-  .timeline-list__text {
-    text-align: center;
-    font-size: 16px;
-    line-height: 1.4;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    padding: 70px 80px 20px 15px;
+    transition: opacity 0.6s;
   }
 </style>
