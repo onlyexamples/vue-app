@@ -53,7 +53,7 @@ export default {
 
   watch: {
     isAuthenticated (val) {
-      if (val) {
+      if (val === true) {
         this.$router.push('/timeline')
       }
     }

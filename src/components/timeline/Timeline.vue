@@ -4,7 +4,6 @@
     div.timeline-scale
       timeline-buttons(v-if="isMonthListExist" :changeActiveItem="changeActiveItem")
       timeline-list(
-        v-if="isMonthListExist"
         :isMonthListExist="isMonthListExist"
         :months="months"
         :isActiveItem="isActiveItem"
@@ -12,11 +11,9 @@
         @showModalWindow="showModalWindow"
       )
 
-      .timeline-message(v-if="!isMonthListExist")
-        .timeline-list__text
-          | Данные отсутствуют.
-          br
-          | Для заполнения данных перейдите в #[router-link.link(to="/profile") профиль]
+      .timeline__empty-month(v-if="isMonthListExist && activeEmptyItem")
+        p Данные {{ activeEmptyItem }}-го месяца отсутствуют.
+        button.button.button--transparent(@click="showModalWindow(activeEmptyItem)") + Добавить данные
 
     modal-window(
       v-show="showModal"
@@ -55,11 +52,12 @@ export default {
   computed: {
     ...mapGetters(['bornData', 'months']),
 
+    activeEmptyItem () {
+      if (!this.months[this.isActiveItem]) { return this.isActiveItem }
+    },
+
     isMonthListExist () {
-      if (this.months) {
-        return Object.keys(this.months).length > 0
-      }
-      return false
+      return Object.keys(this.months).length > 0
     }
   },
 
@@ -103,19 +101,17 @@ export default {
     overflow: hidden;
   }
 
-  .timeline-message {
+  .timeline__empty-month {
+    position: absolute;
+    z-index: 5;
+    top: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.3);
-  }
-
-  .timeline-list__text {
-    text-align: center;
-    font-size: 16px;
-    line-height: 1.4;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    padding: 70px 80px 20px 15px;
+    transition: opacity 0.6s;
   }
 </style>

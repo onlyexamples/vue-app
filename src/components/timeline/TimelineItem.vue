@@ -155,4 +155,8 @@ export default {
       transform: scale(1);
     }
   }
+
+  .timeline-item--empty {
+    flex-direction: column;
+  }
 </style>
