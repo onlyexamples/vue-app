@@ -1,5 +1,5 @@
 <template lang="pug">
-  .profile
+  .profile.page
     header.profile-header
       h1.title Профиль
       button.button(@click="showModal = true") + Добавить месяц

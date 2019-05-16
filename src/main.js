@@ -1,6 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import Vuelidate from 'vuelidate'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage'
@@ -8,6 +9,8 @@ import config from '@/db/firebase/config/index'
 import store from './store'
 import App from './App'
 import router from './router'
+
+Vue.use(Vuelidate)
 
 Vue.config.productionTip = false
 firebase.initializeApp(config)

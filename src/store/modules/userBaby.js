@@ -11,6 +11,11 @@ const mutations = {
     state.months = payload.months
   },
 
+  UNSET_USER_DATA (state) {
+    state.bornData = {}
+    state.months = {}
+  },
+
   UPDATE_BORN_DATA (state, payload) {
     Vue.set(state.bornData, payload)
   },
@@ -32,7 +37,6 @@ const actions = {
     userBabyDataDoc.get()
       .then((data) => {
         let userBabyData = data.exists ? data.data() : console.log('Данный документ не существует!')
-        // console.log(userBabyData)
 
         commit('SET_USER_DATA', userBabyData)
         commit('SET_LOADING', false)
@@ -105,6 +109,11 @@ const actions = {
         commit('SET_ERROR', error)
         commit('SET_LOADING', false)
       })
+  },
+
+  unsetUserBabyData ({ commit }) {
+    commit('CLEAR_ERROR')
+    commit('UNSET_USER_DATA')
   }
 }
 

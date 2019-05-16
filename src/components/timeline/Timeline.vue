@@ -1,16 +1,17 @@
 <template lang="pug">
-  .timeline
-    //- born-data(:bornData="bornData")
-    div.timeline-scale
-      timeline-buttons(v-if="isMonthListExist" :changeActiveItem="changeActiveItem")
+  .timeline.page
+    born-data(:bornData="bornData")
+
+    .timeline-scale
       timeline-list(
         v-if="isMonthListExist"
-        :isMonthListExist="isMonthListExist"
         :months="months"
         :isActiveItem="isActiveItem"
         :showModal="showModal"
         @showModalWindow="showModalWindow"
       )
+
+      timeline-buttons(v-if="isMonthListExist" :changeActiveItem="changeActiveItem")
 
       .timeline-message(v-if="!isMonthListExist")
         .timeline-list__text
@@ -21,6 +22,7 @@
     modal-window(
       v-show="showModal"
       @close="showModal = false"
+      @showCurrentMonthData="showCurrentMonthData"
       :activeItemData="activeItemData"
       :isExistsMonth="isExistsMonth"
     )
@@ -70,7 +72,10 @@ export default {
 
     showModalWindow (monthNumber) {
       this.showModal = true
+      this.showCurrentMonthData(monthNumber)
+    },
 
+    showCurrentMonthData (monthNumber) {
       if (monthNumber) {
         const currentMonth = Object.keys(this.months).find(item => item === monthNumber)
 
@@ -91,15 +96,14 @@ export default {
   .timeline {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 100vw;
-    height: 100vh;
-    margin: -70px -15px -20px -15px;
+    align-self: stretch;
   }
 
   .timeline-scale {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
     width: 100%;
-    height: 100%;
     overflow: hidden;
   }
 

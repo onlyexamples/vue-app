@@ -52,6 +52,7 @@ export default {
 
 <style lang="postcss">
   .timeline-list {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -69,8 +70,8 @@ export default {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 100vw;
-    height: 100vh;
+    max-width: 100%;
+    max-height: 100%;
     padding: 70px 80px 20px 15px;
     transition: opacity 0.6s;
   }

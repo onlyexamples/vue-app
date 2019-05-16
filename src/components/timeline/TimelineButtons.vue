@@ -79,13 +79,11 @@ export default {
   }
 
   .timeline-buttons {
-    position: fixed;
+    position: relative;
     z-index: 15;
-    top: 75px;
-    bottom: 75px;
     right: 0;
     height: calc(90px * 4);
-    margin: auto 15px;
+    margin: 40px 0 40px 15px;
   }
 
   .timeline-arrow {

@@ -8,7 +8,7 @@
         .modal-window
           h3.modal-window__title Создание нового месяца
 
-          form.form(name="month" @submit.prevent="saveNewMonthData(isExistsMonth)")
+          form.form(name="month" @submit.prevent="saveNewMonthData")
             .form-field.form-field--twice
               .form-field__part
                 label.label(for="month_number") Номер месяца
@@ -94,7 +94,7 @@ export default {
   },
 
   methods: {
-    saveNewMonthData (isExistsMonth) {
+    saveNewMonthData () {
       let data = {
         monthNumber: this.monthNumber,
         tooth: this.tooth,
@@ -103,10 +103,11 @@ export default {
         photo: this.downloadURL
       }
 
-      if (!isExistsMonth) {
+      this.$store.dispatch('updateMonthsData', data)
+      // this.$emit('showCurrentMonthData', this.monthNumber)
+      if (!this.isExistsMonth) {
         this.clearform()
       }
-      this.$store.dispatch('updateMonthsData', data)
     },
 
     clearform () {

@@ -18,6 +18,7 @@ const mutations = {
   UNSET_USER (state) {
     state.authenticated = false
     state.email = ''
+    state.emailVerified = false
     state.uid = null
   },
 
@@ -100,7 +101,8 @@ const actions = {
       })
   },
 
-  signOut () {
+  signOut ({ dispatch }) {
+    dispatch('unsetUserBabyData')
     firebase.auth().signOut()
   },
 

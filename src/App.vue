@@ -1,5 +1,5 @@
 <template lang="pug">
-  main#app
+  main.app#app
     nav.header-nav
       navigation
     .content
@@ -36,6 +36,8 @@ export default {
   /* --second-gradient: linear-gradient(to right, #444991, #7552aa);
   --second-gradient: linear-gradient(to right, #C55EB6, #FF698B); */
   --disable-color: rgb(202, 202, 202);
+  --color-success: #72be00;
+  --color-error: tomato;
   }
 
   * {
@@ -52,14 +54,35 @@ export default {
     font-size: 14px;
   }
 
+  .app {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    min-height: 100vh;
+  }
+
   .header-nav {
-    position: fixed;
-    z-index: 15;
     width: 100%;
   }
 
   .content {
-    padding: 70px 15px 20px 15px;
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    padding: 15px;
+    height: 100%;
+    flex-grow: 1;
+  }
+
+  .page {
+    width: 100%;
+  }
+
+  .page--centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
 
   .title {
@@ -104,8 +127,15 @@ export default {
     width: 48%;
   }
 
-  .form-field--error {
-    color: tomato;
+  .form-field--error input,
+  .form-field--error textarea {
+    color: var(--color-error);
+    border-color: var(--color-error);
+  }
+
+  .form-field--error input:focus,
+  .form-field--error textarea:focus {
+     box-shadow: 0 0 1px var(--color-error);
   }
 
   .label {

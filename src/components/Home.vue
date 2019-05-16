@@ -1,5 +1,6 @@
 <template lang="pug">
-  h1 Привет
+  .welcome.page
+    h1 Привет
 </template>
 
 <script>
